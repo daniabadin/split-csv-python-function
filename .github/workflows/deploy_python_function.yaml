@@ -153,6 +153,6 @@ jobs:
       # Deploy Azure functions code
       - name: 'Run Azure Functions Action'
         run: |
-          az functionapp deployment source function-zip --timeout 60 -g $AZURE_RESOURCE_GROUP -n $AZURE_FUNCTIONAPP_NAME --src $BUILD_PACKAGE_NAME || { echo "Azure API Zip upload error"; exit 15;}
+          az functionapp deployment source comfig-zip --timeout 60 -g $AZURE_RESOURCE_GROUP -n $AZURE_FUNCTIONAPP_NAME --src $BUILD_PACKAGE_NAME || { echo "Azure API Zip upload error"; exit 15;}
           rm -f $BUILD_PACKAGE_NAME
       
