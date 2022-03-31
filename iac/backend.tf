@@ -8,14 +8,14 @@ resource "azurerm_storage_account" "tf_backend" {
 
 resource "azurerm_storage_container" "tfstate" {
   name                  = "tfstate"
-  storage_account_name  = azurerm_storage_account.tfstate.name
+  storage_account_name  = azurerm_storage_account.tf_backend.name
   container_access_type = "blob"
 }
 
 terraform {
   backend "azurerm" {
       resource_group_name  = "uni-labs"
-      storage_account_name = azurerm_storage_account.tf_backend
+      storage_account_name = azurerm_storage_account.tf_backend.name
       container_name       = azurerm_storage_container.tfstate.name
       key                  = "terraform.tfstate"
   }
