@@ -1,0 +1,52 @@
+name: 'Destroy Python Function'
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+    - main
+    - develop
+
+env: 
+  TF_VERSION: "1.1.7"
+  TF_RESOURCES_PATH: '${{ github.workspace }}/iac'
+  ARM_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
+  ARM_CLIENT_SECRET: ${{ secrets.ARM_CLIENT_SECRET }}
+  ARM_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}
+  ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
+  AZURE_RESOURCE_GROUP: "uni-labs"
+  AZURE_LOCATION: "westeurope"
+
+jobs:  
+  terraform_destroy:
+    name: 'Terraform Destroy'
+    runs-on: ubuntu-latest
+    
+    defaults:
+      run:
+        shell: bash
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Setup terraform
+        uses: hashicorp/setup-terraform@v1
+        with:
+          terraform_version: ${{ env.TF_VERSION }}
+
+      - name: Login to Azure
+        shell: bash
+        run: |
+          az login --service-principal --username $ARM_CLIENT_ID --password $ARM_CLIENT_SECRET --tenant $ARM_TENANT_ID || { echo "::error::Error login into Azure. Most likely there is NOT a SECRET AVAILABLE that contains your Azure credentials."; exit 199; }
+          az account set --subscription $ARM_SUBSCRIPTION_ID || { echo "::error::Error setting subscriptcion. Provide a correct subscription. Verify your Azure credentials."; exit 199; }
+  
+      - name: Terraform Init
+        run: terraform init
+        working-directory: ${{ env.TF_RESOURCES_PATH }}
+
+      # If the branch is main, build or change infrastructure according to Terraform configuration files
+      - name: Terraform Destroy
+        #if: github.ref == 'refs/heads/main'
+        run: terraform destroy -auto-approve -var="resource_group_name=${AZURE_RESOURCE_GROUP}" -var="location=${AZURE_LOCATION}"
+        working-directory: ${{ env.TF_RESOURCES_PATH }}
