@@ -1,0 +1,15 @@
+resource "azurerm_function_app" "split_csv_python_func" {
+  name                       = "split-csv-python-func"
+  resource_group_name        = var.resource_group_name
+  location                   = var.location
+  app_service_plan_id        = azurerm_app_service_plan.split_csv_python_asp.id
+  storage_account_name       = azurerm_storage_account.unilabscsvs.name
+  storage_account_access_key = azurerm_storage_account.unilabscsvs.primary_access_key
+  os_type                    = "linux"
+
+  app_settings = {
+    FUNCTIONS_WORKER_RUNTIME    = "python"
+    FUNCTION_APP_EDIT_MODE      = "readonly"
+    unilabscsvs_STORAGE         = azurerm_storage_account.unilabscsvs.primary_conection_string
+  }
+}
