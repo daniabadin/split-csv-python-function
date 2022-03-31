@@ -12,3 +12,9 @@ resource "azurerm_storage_account" "unilabscsvs" {
   account_tier             = "Standard"
   account_replication_type = "LRS"
 }
+
+resource "azurerm_storage_container" "csvs" {
+  name                  = "csvs"
+  storage_account_name  = azurerm_storage_account.unilabscsvs.name
+  container_access_type = "blob"
+}
