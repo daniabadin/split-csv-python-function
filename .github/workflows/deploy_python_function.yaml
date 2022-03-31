@@ -117,8 +117,8 @@ jobs:
       - name: Setup Python virtual env
         shell: bash
         run: |
-          python -m venv worker_venv
-          source worker_venv/bin/activate
+          python -m venv .venv
+          source .venv/bin/activate
           pip install -r requirements.txt
         working-directory: ${{ env.PYTHON_CODE_PATH }}
 
@@ -132,7 +132,7 @@ jobs:
         uses: actions/upload-artifact@v2
         with: 
           name: ${{ env.BUILD_PACKAGE_NAME }}
-          path: ${BUILD_PACKAGE_NAME}.zip
+          path: ${{ env.PYTHON_CODE_PATH }}/${{ env.BUILD_PACKAGE_NAME }}.zip
           retention-days: 5
           if-no-files-found: error
 
@@ -159,6 +159,6 @@ jobs:
       # Deploy Azure functions code
       - name: 'Run Azure Functions Action'
         run: |
-          az functionapp deployment source comfig-zip --timeout 60 -g $AZURE_RESOURCE_GROUP -n $AZURE_FUNCTIONAPP_NAME --src $BUILD_PACKAGE_NAME || { echo "Azure API Zip upload error"; exit 15;}
+          az functionapp deployment source config-zip --timeout 60 -g $AZURE_RESOURCE_GROUP -n $AZURE_FUNCTIONAPP_NAME --src $BUILD_PACKAGE_NAME || { echo "Azure API Zip upload error"; exit 15;}
           rm -f $BUILD_PACKAGE_NAME
       
