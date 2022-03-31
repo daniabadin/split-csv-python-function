@@ -45,13 +45,8 @@ jobs:
       - name: Login to Azure
         shell: bash
         run: |
-          az login --service-principal --username $CLIENT_ID --password $CLIENT_SECRET --tenant $TENANT_ID || { echo "::error::Error login into Azure. Most likely there is NOT a SECRET AVAILABLE that contains your Azure credentials."; exit 199; }
-          az account set --subscription $SUBSCRIPTION_ID || { echo "::error::Error setting subscriptcion. Provide a correct subscription. Verify your Azure credentials."; exit 199; }
-        env:
-          CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
-          CLIENT_SECRET: ${{ secrets.AZURE_CLIENT_SECRET }}
-          TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
-          SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+          az login --service-principal --username $ARM_CLIENT_ID --password $ARM_CLIENT_SECRET --tenant $ARM_TENANT_ID || { echo "::error::Error login into Azure. Most likely there is NOT a SECRET AVAILABLE that contains your Azure credentials."; exit 199; }
+          az account set --subscription $ARM_SUBSCRIPTION_ID || { echo "::error::Error setting subscriptcion. Provide a correct subscription. Verify your Azure credentials."; exit 199; }
 
       # Initialize a new or existing Terraform working directory by creating initial files, loading any remote state, downloading modules, etc.
       - name: Terraform Init
@@ -92,13 +87,8 @@ jobs:
       - name: Login to Azure
         shell: bash
         run: |
-          az login --service-principal --username $CLIENT_ID --password $CLIENT_SECRET --tenant $TENANT_ID || { echo "::error::Error login into Azure. Most likely there is NOT a SECRET AVAILABLE that contains your Azure credentials."; exit 199; }
-          az account set --subscription $SUBSCRIPTION_ID || { echo "::error::Error setting subscriptcion. Provide a correct subscription. Verify your Azure credentials."; exit 199; }
-        env:
-          CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
-          CLIENT_SECRET: ${{ secrets.AZURE_CLIENT_SECRET }}
-          TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
-          SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+          az login --service-principal --username $ARM_CLIENT_ID --password $ARM_CLIENT_SECRET --tenant $ARM_TENANT_ID || { echo "::error::Error login into Azure. Most likely there is NOT a SECRET AVAILABLE that contains your Azure credentials."; exit 199; }
+          az account set --subscription $ARM_SUBSCRIPTION_ID || { echo "::error::Error setting subscriptcion. Provide a correct subscription. Verify your Azure credentials."; exit 199; }
   
       - name: Terraform Init
         run: terraform init
@@ -163,13 +153,8 @@ jobs:
       - name: Login to Azure
         shell: bash
         run: |
-          az login --service-principal --username $CLIENT_ID --password $CLIENT_SECRET --tenant $TENANT_ID || { echo "::error::Error login into Azure. Most likely there is NOT a SECRET AVAILABLE that contains your Azure credentials."; exit 199; }
-          az account set --subscription $SUBSCRIPTION_ID || { echo "::error::Error setting subscriptcion. Provide a correct subscription. Verify your Azure credentials."; exit 199; }
-        env:
-          CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
-          CLIENT_SECRET: ${{ secrets.AZURE_CLIENT_SECRET }}
-          TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
-          SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+          az login --service-principal --username $ARM_CLIENT_ID --password $ARM_CLIENT_SECRET --tenant $ARM_TENANT_ID || { echo "::error::Error login into Azure. Most likely there is NOT a SECRET AVAILABLE that contains your Azure credentials."; exit 199; }
+          az account set --subscription $ARM_SUBSCRIPTION_ID || { echo "::error::Error setting subscriptcion. Provide a correct subscription. Verify your Azure credentials."; exit 199; }
 
       # Deploy Azure functions code
       - name: 'Run Azure Functions Action'
