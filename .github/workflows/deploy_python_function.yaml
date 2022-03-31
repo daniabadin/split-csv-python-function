@@ -94,10 +94,7 @@ jobs:
       # If the branch is main, build or change infrastructure according to Terraform configuration files
       - name: Terraform Apply
         if: github.ref == 'refs/heads/main'
-        run: terraform apply -auto-approve -var='resource_group_name="${AZURE_RESOURCE_GROUP}"' -var='location="${AZURE_LOCATION}"'
-        env:
-          AZURE_RESOURCE_GROUP: ${{ env.AZURE_RESOURCE_GROUP }}
-          AZURE_LOCATION: ${{ env.AZURE_LOCATION }}
+        run: terraform apply -auto-approve -var="resource_group_name=${AZURE_RESOURCE_GROUP}" -var="location=${AZURE_LOCATION}"
         working-directory: ${{ env.TF_RESOURCES_PATH }}
 
   build_python_function:
@@ -156,10 +153,6 @@ jobs:
       # Deploy Azure functions code
       - name: 'Run Azure Functions Action'
         run: |
-          az functionapp deployment source function-zip --timeout 60 -g $AZURE_RESOURCE_GROUP -n $AZURE_FUNCTIONAPP_NAME --src $ZIP_FILE || { echo "Azure API Zip upload error"; exit 15;}
-          rm -f $ZIP_FILE
-        env:
-          AZURE_RESOURCE_GROUP: ${{ env.AZURE_RESOURCE_GROUP }}
-          AZURE_FUNCTIONAPP_NAME: ${{ env.AZURE_FUNCTIONAPP_NAME }}
-          ZIP_FILE: ${{ env.BUILD_PACKAGE_NAME }}
+          az functionapp deployment source function-zip --timeout 60 -g $AZURE_RESOURCE_GROUP -n $AZURE_FUNCTIONAPP_NAME --src $BUILD_PACKAGE_NAME || { echo "Azure API Zip upload error"; exit 15;}
+          rm -f $BUILD_PACKAGE_NAME
       
