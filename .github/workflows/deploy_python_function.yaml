@@ -60,7 +60,7 @@ jobs:
 
       # Generates an execution plan for Terraform
       - name: Terraform Plan
-        run: terraform plan -var='resource_group_name="${AZURE_RESOURCE_GROUP}"' -var='location="${AZURE_LOCATION}"'
+        run: terraform plan -var="resource_group_name=${AZURE_RESOURCE_GROUP}" -var="location=${AZURE_LOCATION}"
         working-directory: ${{ env.TF_RESOURCES_PATH }}
   
   terraform_apply:
