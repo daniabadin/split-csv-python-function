@@ -19,5 +19,5 @@ resource "azurerm_storage_account" "unilabscsvs" {
 resource "azurerm_storage_container" "csvs" {
   name                  = "csvs"
   storage_account_name  = azurerm_storage_account.unilabscsvs.name
-  container_access_type = "container"
+  container_access_type = "private"
 }
