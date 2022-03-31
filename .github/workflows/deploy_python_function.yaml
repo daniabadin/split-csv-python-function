@@ -1,11 +1,11 @@
 name: 'Deploy Python Function'
 
 on:
+  workflow_dispatch:
   push:
     branches:
     - main
     - develop
-  workflow_dispatch:
 
 env: 
   TF_VERSION: "1.1.7"
