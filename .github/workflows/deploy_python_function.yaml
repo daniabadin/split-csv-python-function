@@ -156,9 +156,12 @@ jobs:
           az login --service-principal --username $ARM_CLIENT_ID --password $ARM_CLIENT_SECRET --tenant $ARM_TENANT_ID || { echo "::error::Error login into Azure. Most likely there is NOT a SECRET AVAILABLE that contains your Azure credentials."; exit 199; }
           az account set --subscription $ARM_SUBSCRIPTION_ID || { echo "::error::Error setting subscriptcion. Provide a correct subscription. Verify your Azure credentials."; exit 199; }
 
+      - name: pwd
+        run: ls -la
+
       # Deploy Azure functions code
       - name: 'Run Azure Functions Action'
         run: |
-          az functionapp deployment source config-zip --timeout 60 -g $AZURE_RESOURCE_GROUP -n $AZURE_FUNCTIONAPP_NAME --src $BUILD_PACKAGE_NAME || { echo "Azure API Zip upload error"; exit 15;}
-          rm -f $BUILD_PACKAGE_NAME
+          az functionapp deployment source config-zip --timeout 60 -g $AZURE_RESOURCE_GROUP -n $AZURE_FUNCTIONAPP_NAME --src ${BUILD_PACKAGE_NAME}.zip || { echo "Azure API Zip upload error"; exit 15;}
+          rm -f $BUILD_PACKAGE_NAME.zip
       
