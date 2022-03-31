@@ -93,7 +93,7 @@ jobs:
 
       # If the branch is main, build or change infrastructure according to Terraform configuration files
       - name: Terraform Apply
-        if: github.ref == 'refs/heads/main'
+        #if: github.ref == 'refs/heads/main'
         run: terraform apply -auto-approve -var="resource_group_name=${AZURE_RESOURCE_GROUP}" -var="location=${AZURE_LOCATION}"
         working-directory: ${{ env.TF_RESOURCES_PATH }}
 

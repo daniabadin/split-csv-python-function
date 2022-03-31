@@ -65,7 +65,7 @@ def main(inputblob: func.InputStream):
 #### TESTING ON LOCAL
 #########################################
 
-#### MUST BE EXECUTED FROM code/SplitCSV directory, run py __init__.py
+#### MUST BE EXECUTED FROM ROOT DIRECTORY, run py code/SplitCSV/__init__.py
 
 # def write_chunk_local(filename, part, lines, header):
 
