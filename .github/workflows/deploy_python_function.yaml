@@ -19,7 +19,7 @@ env:
   BUILD_PACKAGE_NAME: python_function
   AZURE_FUNCTIONAPP_NAME: "split-csv-python-func"
   AZURE_RESOURCE_GROUP: "uni-labs"
-  AZURE_LOCATION: "West Europe"
+  AZURE_LOCATION: "westeurope"
 
 jobs:
   terraform_plan:
@@ -61,9 +61,6 @@ jobs:
       # Generates an execution plan for Terraform
       - name: Terraform Plan
         run: terraform plan -var='resource_group_name="${AZURE_RESOURCE_GROUP}"' -var='location="${AZURE_LOCATION}"'
-        env:
-          AZURE_RESOURCE_GROUP: ${{ env.AZURE_RESOURCE_GROUP }}
-          AZURE_LOCATION: ${{ env.AZURE_LOCATION }}
         working-directory: ${{ env.TF_RESOURCES_PATH }}
   
   terraform_apply:
