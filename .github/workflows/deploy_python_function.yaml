@@ -122,11 +122,17 @@ jobs:
           pip install -r requirements.txt
         working-directory: ${{ env.PYTHON_CODE_PATH }}
 
+      - name: "Zip code"
+        run: |
+          pwd
+          zip -r ${BUILD_PACKAGE_NAME}.zip .
+        working-directory: ${{ env.PYTHON_CODE_PATH }}
+
       - name: Upload artifact zip with Python function
         uses: actions/upload-artifact@v2
         with: 
           name: ${{ env.BUILD_PACKAGE_NAME }}
-          path: ${{ env.PYTHON_CODE_PATH }}/
+          path: ${BUILD_PACKAGE_NAME}.zip
           retention-days: 5
           if-no-files-found: error
 
