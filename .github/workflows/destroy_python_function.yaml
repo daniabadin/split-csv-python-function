@@ -2,10 +2,6 @@ name: 'Destroy Python Function'
 
 on:
   workflow_dispatch:
-  push:
-    branches:
-    - main
-    - develop
 
 env: 
   TF_VERSION: "1.1.7"
