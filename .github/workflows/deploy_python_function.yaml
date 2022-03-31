@@ -97,48 +97,8 @@ jobs:
         run: terraform apply -auto-approve -var="resource_group_name=${AZURE_RESOURCE_GROUP}" -var="location=${AZURE_LOCATION}"
         working-directory: ${{ env.TF_RESOURCES_PATH }}
 
-  # build_python_function:
-  #   name: Build Python Function
-  #   needs: terraform_apply
-  #   runs-on: ubuntu-latest
-  #   defaults:
-  #     run:
-  #       shell: bash
-
-  #   steps:
-  #     - name: Checkout
-  #       uses: actions/checkout@v2
-      
-  #     - name: Setup Python 3.8 Environment
-  #       uses: actions/setup-python@v1
-  #       with:
-  #         python-version: ${{ env.PYTHON_VERSION }}
-
-  #     # - name: Setup Python virtual env
-  #     #   shell: bash
-  #     #   run: |
-  #     #     python -m venv .venv
-  #     #     source .venv/bin/activate
-  #     #     pip install -r requirements.txt
-  #     #   working-directory: ${{ env.PYTHON_CODE_PATH }}
-
-  #     # - name: "Zip code"
-  #     #   run: |
-  #     #     pwd
-  #     #     zip -r ${BUILD_PACKAGE_NAME}.zip .
-  #     #   working-directory: ${{ env.PYTHON_CODE_PATH }}
-
-  #     - name: Upload artifact zip with Python function
-  #       uses: actions/upload-artifact@v2
-  #       with: 
-  #         name: ${{ env.BUILD_PACKAGE_NAME }}
-  #         path: ${{ env.PYTHON_CODE_PATH }}/
-  #         retention-days: 5
-  #         if-no-files-found: error
-
   deploy_python_function:
     name: Deploy Python Function
-    #needs: build_python_function
     needs: terraform_apply
     runs-on: ubuntu-latest
     defaults:
@@ -148,11 +108,6 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2
-      
-      # - name: Download artifact zip with Python function
-      #   uses: actions/download-artifact@v3
-      #   with:
-      #     name: ${{ env.BUILD_PACKAGE_NAME }}
 
       - name: Login to Azure
         shell: bash
@@ -170,6 +125,6 @@ jobs:
       - name: 'Run Azure Functions Action'
         run: |
           az functionapp deployment source config-zip --timeout 60 -g $AZURE_RESOURCE_GROUP -n $AZURE_FUNCTIONAPP_NAME --src ${BUILD_PACKAGE_NAME}.zip || { echo "Azure API Zip upload error"; exit 15;}
-          rm -f $BUILD_PACKAGE_NAME.zip
+          rm -f ${BUILD_PACKAGE_NAME}.zip
         working-directory: ${{ env.PYTHON_CODE_PATH }}
       
