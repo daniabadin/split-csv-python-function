@@ -2,7 +2,7 @@ resource "azurerm_application_insights" "split_csv_python_insights" {
   name                = "split-csv-python-insights"
   resource_group_name = var.resource_group_name
   location            = var.location
-  application_type    = "Web"
+  application_type    = "web"
 }
 
 resource "azurerm_function_app" "split_csv_python_func" {
