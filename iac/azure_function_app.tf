@@ -18,7 +18,8 @@ resource "azurerm_function_app" "split_csv_python_func" {
     FUNCTIONS_WORKER_RUNTIME       = "python"
     FUNCTION_APP_EDIT_MODE         = "readonly"
     APPINSIGHTS_INSTRUMENTATIONKEY = azurerm_application_insights.split_csv_python_insights.instrumentation_key
-    unilabscsvs_STORAGE            = azurerm_storage_account.unilabscsvs.primary_connection_string
+    AzureWebJobsStorage            = azurerm_storage_account.unilabscsvs.primary_connection_string
+    storage_name                   = azurerm_storage_account.unilabscsvs.primary_connection_string
 
   }
 }
