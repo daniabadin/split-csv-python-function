@@ -1,3 +1,10 @@
+resource "azurerm_application_insights" "split_csv_python_insights" {
+  name                = "split-csv-python-insights"
+  resource_group_name = var.resource_group_name
+  location            = var.location
+  application_type    = "Web"
+}
+
 resource "azurerm_function_app" "split_csv_python_func" {
   name                       = "split-csv-python-func"
   resource_group_name        = var.resource_group_name
@@ -10,6 +17,8 @@ resource "azurerm_function_app" "split_csv_python_func" {
   app_settings = {
     FUNCTIONS_WORKER_RUNTIME = "python"
     FUNCTION_APP_EDIT_MODE   = "readonly"
+    APPINSIGHTS_INSTRUMENTATIONKEY = azurerm_application_insights.split_csv_python_insights.instrumentation_key
     unilabscsvs_STORAGE      = azurerm_storage_account.unilabscsvs.primary_connection_string
+    
   }
 }
