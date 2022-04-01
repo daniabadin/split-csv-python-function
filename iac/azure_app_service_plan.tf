@@ -4,7 +4,7 @@ resource "azurerm_app_service_plan" "split_csv_python_asp" {
   location            = var.location
   kind                = "FunctionApp"
   sku {
-    tier = "Dynamic"
-    size = "Y1"
+    tier = "Standard"
+    size = "S1"
   }
 }
