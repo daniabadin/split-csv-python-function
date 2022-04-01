@@ -115,6 +115,15 @@ jobs:
           az login --service-principal --username $ARM_CLIENT_ID --password $ARM_CLIENT_SECRET --tenant $ARM_TENANT_ID || { echo "::error::Error login into Azure. Most likely there is NOT a SECRET AVAILABLE that contains your Azure credentials."; exit 199; }
           az account set --subscription $ARM_SUBSCRIPTION_ID || { echo "::error::Error setting subscriptcion. Provide a correct subscription. Verify your Azure credentials."; exit 199; }
 
+      - name: Install dependencies
+        shell: bash
+        run: |
+          pushd './${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}'
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt --target=".python_packages/lib/site-packages"
+          popd
+        working-directory: ${{ env.PYTHON_CODE_PATH }}
+
       - name: "Zip code"
         run: |
           pwd
